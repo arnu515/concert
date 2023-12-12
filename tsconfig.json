@@ -3,11 +3,31 @@
 		"target": "ES2020",
 		"useDefineForClassFields": true,
 		"module": "ESNext",
-		"lib": ["ES2020", "DOM", "DOM.Iterable"],
+		"lib": [
+			"ES2020",
+			"DOM",
+			"DOM.Iterable"
+		],
 		"skipLibCheck": true,
 		"paths": {
-			"react": ["./node_modules/preact/compat/"],
-			"react-dom": ["./node_modules/preact/compat/"]
+			"react": [
+				"./node_modules/preact/compat/"
+			],
+			"react-dom": [
+				"./node_modules/preact/compat/"
+			],
+			"$/*": [
+				"./src/*"
+			],
+			"$c/*": [
+				"./src/components/*"
+			],
+			"$util/*": [
+				"./src/util/*"
+			],
+			"$contexts/*": [
+				"./src/contexts/*"
+			]
 		},
 		/* Bundler mode */
 		"moduleResolution": "bundler",
@@ -23,9 +43,12 @@
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"noFallthroughCasesInSwitch": true,
+		"baseUrl": "."
 	},
-	"include": ["src"],
+	"include": [
+		"src"
+	],
 	"references": [
 		{
 			"path": "./tsconfig.node.json"
