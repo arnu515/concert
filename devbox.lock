@@ -34,6 +34,26 @@
           "store_path": "/nix/store/mih3j0yxng0xsad55787jqfbyi53rp0j-nodejs-20.10.0"
         }
       }
+    },
+    "supabase-cli@latest": {
+      "last_modified": "2023-11-17T14:14:56Z",
+      "resolved": "github:NixOS/nixpkgs/a71323f68d4377d12c04a5410e214495ec598d4c#supabase-cli",
+      "source": "devbox-search",
+      "version": "1.112.0",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/wkdyrfszz6apgjar8x1zwsqmjawp08nm-supabase-cli-1.112.0"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/k2g146166n5rp2pij43wawm2q1k005nh-supabase-cli-1.112.0"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/58s7pf8f7rj9vc4794rxhzhrlpnfr3ij-supabase-cli-1.112.0"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/j3zv8nl9dpf356fyh1d886hj79mp9jgb-supabase-cli-1.112.0"
+        }
+      }
     }
   }
 }
