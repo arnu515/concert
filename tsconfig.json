@@ -22,6 +22,9 @@
 			"$c/*": [
 				"./src/components/*"
 			],
+			"$r/*": [
+				"./src/routes/*"
+			],
 			"$util/*": [
 				"./src/util/*"
 			],
