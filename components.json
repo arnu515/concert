@@ -5,12 +5,12 @@
   "tsx": true,
   "tailwind": {
     "config": "tailwind.config.cjs",
-    "css": "$/index.postcss",
+    "css": "src/index.postcss",
     "baseColor": "zinc",
     "cssVariables": true
   },
   "aliases": {
-    "components": "$c",
+    "components": "src/components",
     "utils": "$util/ui.ts"
   }
 }
