@@ -6,7 +6,7 @@ export default function Navbar() {
   const auth = useContext(AuthContext)
 
   return (
-    <nav class="flex items-center justify-between border-b border-gray-400 bg-gray-200 px-4 py-2 text-black dark:border-gray-600 dark:bg-gray-800 dark:text-white">
+    <nav class="flex items-center justify-between border-b border-gray-400 bg-gray-200 px-4 py-2 text-black dark:border-gray-700 dark:bg-gray-800 dark:text-white">
       <a
         href="/"
         class="font-heading text-lg font-semibold text-sky-600"
