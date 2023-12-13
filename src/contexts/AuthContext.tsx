@@ -4,20 +4,33 @@ import type { Session, User } from "@supabase/supabase-js"
 import { useEffect } from "preact/hooks"
 import { Signal, useSignal } from "@preact/signals"
 import { Loader2 } from "lucide-react"
+import { Database } from "$/util/dbTypes"
 
 interface AuthState {
   session: Session | null
   user: User | null
-  profile: null // TODO
+  profile: Database["public"]["Tables"]["profiles"]["Row"] | null
 }
 
 export const AuthContext = createContext<
   Signal<AuthState | null | undefined> | undefined
 >(undefined)
 
-export async function fetchProfile(userId: string) {
-  return null
-} // TODO
+export async function fetchProfile(userId?: string | null) {
+  if (!userId) return null
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", userId)
+    .single()
+
+  if (!data || error) {
+    console.error(error)
+    return null
+  }
+
+  return data
+}
 
 export default function AuthProvider({ children }: { children: ComponentChild }) {
   const authState = useSignal<AuthState | null | undefined>(undefined)
