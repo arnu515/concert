@@ -2,6 +2,7 @@ import { AuthContext } from "$/contexts/AuthContext"
 import { useContext } from "preact/hooks"
 import ThemeButton from "$c/ThemeButton"
 import { useComputed } from "@preact/signals"
+import { Badge } from "$c/ui/badge"
 
 export default function Navbar() {
   const auth = useContext(AuthContext)!
@@ -21,6 +22,11 @@ export default function Navbar() {
         <a href="/" class="font-semibold">
           Explore
         </a>
+        {user.value && (
+          <a href="/invites" class="font-semibold">
+            Invites <Badge className="text-sm">3</Badge>
+          </a>
+        )}
         <a
           href={user.value ? "/new" : "/signup"}
           class="border border-gray-700 bg-amber-500 px-2 py-1 font-semibold text-white dark:border-white"
