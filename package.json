@@ -16,8 +16,12 @@
 		"@supabase/auth-ui-react": "^0.4.6",
 		"@supabase/auth-ui-shared": "^0.1.8",
 		"@supabase/supabase-js": "^2.39.0",
+		"class-variance-authority": "^0.7.0",
+		"clsx": "^2.0.0",
 		"lucide-react": "^0.294.0",
-		"preact": "^10.19.1"
+		"preact": "^10.19.1",
+		"tailwind-merge": "^2.1.0",
+		"tailwindcss-animate": "^1.0.7"
 	},
 	"devDependencies": {
 		"@preact/preset-vite": "^2.6.0",
