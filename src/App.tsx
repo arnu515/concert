@@ -1,7 +1,11 @@
+import AuthProvider from "$contexts/AuthContext"
+
 export function App() {
 	return (
 		<>
-			<h1 class="font-heading text-center text-5xl">Hello, world!</h1>
+			<AuthProvider>
+				<h1 class="text-center font-heading text-5xl">Hello, world!</h1>
+			</AuthProvider>
 		</>
 	)
 }
