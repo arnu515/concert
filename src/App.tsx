@@ -3,11 +3,13 @@ import ThemeProvider from "$contexts/ThemeContext"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Index from "$r/index"
 import RootLayout from "$r/layouts/Root"
+import RootError from "$r/error"
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: <RootLayout />,
+		errorElement: <RootError />,
 		children: [
 			{
 				path: "/",
