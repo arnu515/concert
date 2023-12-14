@@ -13,14 +13,12 @@ interface AuthState {
 
 export const AuthContext = createContext<AuthState | null | undefined>(undefined)
 
-export async function fetchProfile(userId?: string | null, rwd = false) {
-  if (!userId) return null
-
+export async function fetchProfile(userId: string, rwd = false) {
   // fetch from cache
   const profileFromCache = rwd
     ? null
     : await cache.get(`profile:${userId}`, undefined, 600000) // 10m
-  if (profileFromCache) return profileFromCache as AuthState["profile"]
+  if (profileFromCache) return profileFromCache as NonNullable<AuthState["profile"]>
 
   const { data, error } = await supabase
     .from("profiles")
@@ -29,8 +27,7 @@ export async function fetchProfile(userId?: string | null, rwd = false) {
     .single()
 
   if (!data || error) {
-    console.error(error)
-    return null
+    throw new Error(error.message)
   }
 
   // cache
@@ -50,11 +47,17 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         setAuthState(null)
         return
       }
-      setAuthState({
-        session,
-        user: session.user,
-        profile: await fetchProfile(session.user.id)
-      })
+      // If we could not fetch the user's profile, sign them out
+      try {
+        setAuthState({
+          session,
+          user: session.user,
+          profile: await fetchProfile(session.user.id)
+        })
+      } catch (e) {
+        console.error(e)
+        await supabase.auth.signOut()
+      }
     })
 
     return () => {
