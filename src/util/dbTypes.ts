@@ -18,7 +18,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string
-          from_id: string
+          from_id?: string
           id?: number
           stage_id: string
         }
@@ -86,7 +86,7 @@ export interface Database {
         Insert: {
           acknowledged?: boolean
           created_at?: string
-          from_id: string
+          from_id?: string
           id?: number
           stage_id: string
           to_id: string
@@ -138,7 +138,7 @@ export interface Database {
           id: string
           invite_only?: boolean
           name: string
-          owner_id: string
+          owner_id?: string
         }
         Update: {
           created_at?: string
