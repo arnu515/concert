@@ -1,4 +1,3 @@
-import AuthProvider from "$contexts/AuthContext"
 import ThemeProvider from "$contexts/ThemeContext"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Index from "$r/page"
@@ -23,9 +22,7 @@ export function App() {
 	return (
 		<>
 			<ThemeProvider>
-				<AuthProvider>
-					<RouterProvider router={router} />
-				</AuthProvider>
+				<RouterProvider router={router} />
 			</ThemeProvider>
 		</>
 	)
