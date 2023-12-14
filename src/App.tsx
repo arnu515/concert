@@ -10,6 +10,7 @@ import RootError from "$r/error"
 import Signup from "$r/signup/page"
 import newAction from "$r/new/action"
 import StageStageIdPage from "$r/stage/[stageId]/page"
+import StageStageIdError from "$r/stage/[stageId]/error"
 
 const router = createBrowserRouter([
 	{
@@ -25,7 +26,11 @@ const router = createBrowserRouter([
 			{ path: "/signup", element: <Signup /> },
 			{ path: "/login", element: <Signup view="sign_in" /> },
 			{ path: "/stage", loader: () => redirect("/") },
-			{ path: "/stage/:stageId", element: <StageStageIdPage /> }
+			{
+				path: "/stage/:stageId",
+				element: <StageStageIdPage />,
+				errorElement: <StageStageIdError />
+			}
 		]
 	}
 ])
