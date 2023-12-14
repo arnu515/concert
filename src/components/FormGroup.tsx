@@ -1,14 +1,16 @@
 import { cn } from "$util/ui"
-import type { ComponentChild } from "preact"
+import type { ReactNode } from "react"
 
 export default function FormGroup({
   className,
   children
 }: {
   className?: string
-  children: ComponentChild
+  children: ReactNode
 }) {
   return (
-    <div class={cn("flex flex-col justify-center gap-2", className)}>{children}</div>
+    <div className={cn("flex flex-col justify-center gap-2", className)}>
+      {children}
+    </div>
   )
 }

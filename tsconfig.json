@@ -10,12 +10,6 @@
 		],
 		"skipLibCheck": true,
 		"paths": {
-			"react": [
-				"./node_modules/preact/compat/"
-			],
-			"react-dom": [
-				"./node_modules/preact/compat/"
-			],
 			"$/*": [
 				"./src/*"
 			],
@@ -39,9 +33,6 @@
 		"isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
-		"jsxImportSource": "preact",
-		// "jsxFactory": "h",
-		// "jsxFragmentFactory": "Fragment",
 		/* Linting */
 		"strict": true,
 		"noUnusedLocals": true,

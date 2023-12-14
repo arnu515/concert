@@ -1,19 +1,19 @@
 import { ThemeContext } from "$/contexts/ThemeContext"
-import { useContext } from "preact/hooks"
+import { useContext } from "react"
 import { Sun, Moon } from "lucide-react"
 
 export default function ThemeButton() {
-  const theme = useContext(ThemeContext)!
+  const { theme, setTheme } = useContext(ThemeContext)!
 
   function changeTheme() {
-    const newTheme = theme.peek() === "light" ? "dark" : "light"
+    const newTheme = theme === "light" ? "dark" : "light"
     localStorage.setItem("theme", newTheme)
-    theme.value = newTheme
+    setTheme(newTheme)
   }
 
   return (
-    <button class="bg-inherit p-2 focus:ring-teal-500" onClick={changeTheme}>
-      {theme.value === "light" ? <Sun /> : <Moon />}
+    <button className="bg-inherit p-2 focus:ring-teal-500" onClick={changeTheme}>
+      {theme === "light" ? <Sun /> : <Moon />}
     </button>
   )
 }
