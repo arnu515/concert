@@ -13,7 +13,11 @@ export default function RootError() {
         <Navbar />
       </div>
       <div class="fixed left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-6">
-        <h1 class="text-center text-5xl">An error occured!</h1>
+        <h1 class="font-heading text-5xl font-bold">
+          <span class="text-sky-600 dark:text-blue-600">Concert</span>Meetings{" "}
+          <span className="text-3xl text-gray-400 dark:text-gray-700">:</span>{" "}
+          <span className="font-normal">Error</span>
+        </h1>
         <p className="text-center text-lg uppercase text-gray-500">
           <code>
             {error.status} {error.statusText}
