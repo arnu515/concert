@@ -13,11 +13,13 @@ interface AuthState {
 
 export const AuthContext = createContext<AuthState | null | undefined>(undefined)
 
-export async function fetchProfile(userId?: string | null) {
+export async function fetchProfile(userId?: string | null, rwd = false) {
   if (!userId) return null
 
   // fetch from cache
-  const profileFromCache = await cache.get(`profile:${userId}`, undefined, 600000) // 10m
+  const profileFromCache = rwd
+    ? null
+    : await cache.get(`profile:${userId}`, undefined, 600000) // 10m
   if (profileFromCache) return profileFromCache as AuthState["profile"]
 
   const { data, error } = await supabase
