@@ -2,7 +2,7 @@ import Auth from "$/components/Auth"
 
 export default function Index() {
   return (
-    <main className="mx-auto my-4 grid max-w-screen-xl grid-cols-1 md:my-6 md:grid-cols-3 lg:grid-cols-4">
+    <main className="mx-4 my-4 grid max-w-screen-xl grid-cols-1 md:mx-auto md:my-6 md:grid-cols-3 lg:grid-cols-4">
       <div className="col-span-1 row-start-2 md:col-span-2 md:row-start-auto lg:col-span-3">
         <h1 className="font-heading text-5xl font-bold">
           <span className="text-sky-600 dark:text-blue-600">Concert</span>Meetings{" "}
