@@ -18,7 +18,7 @@ export default function Index() {
         <Stages />
       </div>
       <div className="col-span-1 row-start-1 flex flex-col gap-2 md:row-start-auto">
-        {!auth.user ? (
+        {!auth?.user ? (
           <Auth />
         ) : (
           <>
