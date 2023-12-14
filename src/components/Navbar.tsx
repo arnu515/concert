@@ -14,6 +14,7 @@ import {
   DropdownMenuItem
 } from "./ui/dropdown-menu"
 import { Button } from "./ui/button"
+import { ChevronDown } from "lucide-react"
 
 export default function Navbar() {
   const auth = useContext(AuthContext)!
@@ -59,43 +60,53 @@ export default function Navbar() {
       <div className="md:hidden">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button aria-label="Expand dropdown" title="Click to expand dropdown">
-              <Avatar
-                src={auth.profile?.avatar_url}
-                alt={`${auth.profile?.username}'s avatar`}
-                fb="ae"
-                w="2rem"
-                h="2rem"
-              />
+            <button
+              aria-label="Expand dropdown"
+              title="Click to expand dropdown"
+              className="flex items-center justify-center"
+            >
+              {user ? (
+                <Avatar
+                  src={auth.profile?.avatar_url}
+                  alt={`${auth.profile?.username}'s avatar`}
+                  fb="ae"
+                  w="2rem"
+                  h="2rem"
+                />
+              ) : (
+                <ChevronDown />
+              )}
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
-            {user && (
-              <>
-                <DropdownMenuGroup>
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings" className="flex items-center gap-4">
-                      <Avatar
-                        src={auth.profile?.avatar_url}
-                        alt={`${auth.profile?.username}'s avatar`}
-                        fb="ae"
-                        w="2rem"
-                        h="2rem"
-                      />
-                      <div className="flex flex-col justify-center gap-1">
-                        <span className="truncate font-semibold">
-                          {auth.profile?.username}
-                        </span>
-                        <span className="text-sm font-light text-gray-500">
-                          {user.email}
-                        </span>
-                      </div>
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-              </>
-            )}
+            <DropdownMenuGroup>
+              {user ? (
+                <DropdownMenuItem asChild>
+                  <Link to="/settings" className="flex items-center gap-4">
+                    <Avatar
+                      src={auth.profile?.avatar_url}
+                      alt={`${auth.profile?.username}'s avatar`}
+                      fb="ae"
+                      w="2rem"
+                      h="2rem"
+                    />
+                    <div className="flex flex-col justify-center gap-1">
+                      <span className="truncate font-semibold">
+                        {auth.profile?.username}
+                      </span>
+                      <span className="text-sm font-light text-gray-500">
+                        {user.email}
+                      </span>
+                    </div>
+                  </Link>
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem>
+                  <ThemeButton />
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link to="/" className="font-semibold">
@@ -116,6 +127,9 @@ export default function Navbar() {
                 >
                   {user ? "Create Stage" : "Sign Up"}
                 </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <ThemeButton />
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
