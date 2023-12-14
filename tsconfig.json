@@ -38,7 +38,10 @@
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true,
-		"baseUrl": "."
+		"baseUrl": ".",
+		"types": [
+			"react/experimental"
+		]
 	},
 	"include": [
 		"src"
