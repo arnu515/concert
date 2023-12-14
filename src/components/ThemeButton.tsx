@@ -12,7 +12,12 @@ export default function ThemeButton() {
   }
 
   return (
-    <button className="bg-inherit p-2 focus:ring-teal-500" onClick={changeTheme}>
+    <button
+      className="bg-inherit p-2 focus:ring-teal-500"
+      onClick={changeTheme}
+      title="Change theme"
+      aria-label="Change theme"
+    >
       {theme === "light" ? <Sun /> : <Moon />}
     </button>
   )
