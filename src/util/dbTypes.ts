@@ -38,6 +38,41 @@ export interface Database {
           }
         ]
       }
+      stages: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          invite_only: boolean
+          name: string
+          owner_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id: string
+          invite_only?: boolean
+          name: string
+          owner_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          invite_only?: boolean
+          name?: string
+          owner_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stages_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
