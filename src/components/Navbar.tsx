@@ -4,6 +4,16 @@ import { useContext, useMemo } from "react"
 import { Badge } from "$c/ui/badge"
 import Avatar from "./Avatar"
 import { Link } from "react-router-dom"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+  DropdownMenuItem
+} from "./ui/dropdown-menu"
+import { Button } from "./ui/button"
 
 export default function Navbar() {
   const auth = useContext(AuthContext)!
@@ -18,7 +28,7 @@ export default function Navbar() {
       >
         Concert
       </Link>
-      <div className="flex items-center gap-4">
+      <div className="hidden items-center gap-4 md:flex">
         <ThemeButton />
         <Link to="/" className="font-semibold">
           Explore
@@ -36,9 +46,80 @@ export default function Navbar() {
         </Link>
         {user && (
           <Link to="/settings">
-            <Avatar src={user.email!} alt={user.email!} fb="ae" w="2rem" h="2rem" />
+            <Avatar
+              src={auth.profile?.avatar_url}
+              alt={`${auth.profile?.username}'s avatar`}
+              fb="ae"
+              w="2rem"
+              h="2rem"
+            />
           </Link>
         )}
+      </div>
+      <div className="md:hidden">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button aria-label="Expand dropdown" title="Click to expand dropdown">
+              <Avatar
+                src={auth.profile?.avatar_url}
+                alt={`${auth.profile?.username}'s avatar`}
+                fb="ae"
+                w="2rem"
+                h="2rem"
+              />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            {user && (
+              <>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem asChild>
+                    <Link to="/settings" className="flex items-center gap-4">
+                      <Avatar
+                        src={auth.profile?.avatar_url}
+                        alt={`${auth.profile?.username}'s avatar`}
+                        fb="ae"
+                        w="2rem"
+                        h="2rem"
+                      />
+                      <div className="flex flex-col justify-center gap-1">
+                        <span className="truncate font-semibold">
+                          {auth.profile?.username}
+                        </span>
+                        <span className="text-sm font-light text-gray-500">
+                          {user.email}
+                        </span>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+              </>
+            )}
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link to="/" className="font-semibold">
+                  Explore
+                </Link>
+              </DropdownMenuItem>
+              {user && (
+                <DropdownMenuItem asChild>
+                  <Link to="/invites" className="font-semibold">
+                    Invites <Badge className="ml-2 text-sm">3</Badge>
+                  </Link>
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuItem asChild>
+                <Link
+                  to={user ? "/new" : "/signup"}
+                  className="border border-gray-700 bg-amber-500 px-2 py-1 font-semibold text-white dark:border-gray-200"
+                >
+                  {user ? "Create Stage" : "Sign Up"}
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </nav>
   )
