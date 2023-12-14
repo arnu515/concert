@@ -38,6 +38,55 @@ export interface Database {
           }
         ]
       }
+      stage_invites: {
+        Row: {
+          acknowledged: boolean
+          created_at: string
+          from_id: string
+          id: number
+          stage_id: string
+          to_id: string
+        }
+        Insert: {
+          acknowledged?: boolean
+          created_at?: string
+          from_id: string
+          id?: number
+          stage_id: string
+          to_id: string
+        }
+        Update: {
+          acknowledged?: boolean
+          created_at?: string
+          from_id?: string
+          id?: number
+          stage_id?: string
+          to_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stage_invites_from_id_fkey"
+            columns: ["from_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stage_invites_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "stages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stage_invites_to_id_fkey"
+            columns: ["to_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       stages: {
         Row: {
           created_at: string
