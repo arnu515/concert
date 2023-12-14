@@ -1,8 +1,6 @@
-import { createContext, ComponentChild } from "preact"
+import { createContext, PropsWithChildren, useEffect, useState } from "react"
 import supabase from "$util/supabase"
 import type { Session, User } from "@supabase/supabase-js"
-import { useEffect } from "preact/hooks"
-import { Signal, useSignal } from "@preact/signals"
 import { Loader2 } from "lucide-react"
 import { Database } from "$/util/dbTypes"
 import * as cache from "$util/cache"
@@ -13,9 +11,7 @@ interface AuthState {
   profile: Database["public"]["Tables"]["profiles"]["Row"] | null
 }
 
-export const AuthContext = createContext<
-  Signal<AuthState | null | undefined> | undefined
->(undefined)
+export const AuthContext = createContext<AuthState | null | undefined>(undefined)
 
 export async function fetchProfile(userId?: string | null) {
   if (!userId) return null
@@ -41,22 +37,22 @@ export async function fetchProfile(userId?: string | null) {
   return data
 }
 
-export default function AuthProvider({ children }: { children: ComponentChild }) {
-  const authState = useSignal<AuthState | null | undefined>(undefined)
+export default function AuthProvider({ children }: PropsWithChildren) {
+  const [authState, setAuthState] = useState<AuthState | null | undefined>(undefined)
 
   useEffect(() => {
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange(async (_, session) => {
       if (!session) {
-        authState.value = null
+        setAuthState(null)
         return
       }
-      authState.value = {
+      setAuthState({
         session,
         user: session.user,
         profile: await fetchProfile(session.user.id)
-      }
+      })
     })
 
     return () => {
@@ -66,8 +62,8 @@ export default function AuthProvider({ children }: { children: ComponentChild })
 
   return (
     <AuthContext.Provider value={authState}>
-      {typeof authState === "undefined" || typeof authState.value === "undefined" ? (
-        <div class="fixed left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-4">
+      {typeof authState === "undefined" ? (
+        <div className="fixed left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-4">
           <Loader2 className="animate-spin duration-500" size={64} />
         </div>
       ) : (

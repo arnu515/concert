@@ -1,39 +1,36 @@
 import { Auth as SupabaseAuth } from "@supabase/auth-ui-react"
 import { ThemeSupa } from "@supabase/auth-ui-shared"
 import supabase from "$util/supabase"
-import { useContext } from "preact/hooks"
+import { useContext, useState } from "react"
 import { ThemeContext } from "$contexts/ThemeContext"
 import { AuthContext } from "$/contexts/AuthContext"
 import { Button } from "$c/ui/button"
-import { useSignal } from "@preact/signals"
 import { Loader2 } from "lucide-react"
 
 export default function Auth() {
-  const theme = useContext(ThemeContext)!
+  const { theme } = useContext(ThemeContext)!
   const auth = useContext(AuthContext)!
-  const isSigningOut = useSignal(false)
+  const [isSigningOut, setSigningOut] = useState(false)
 
   return (
-    <div class="border border-gray-700 bg-gray-100 px-4 py-2 dark:border-gray-300 dark:bg-gray-800">
-      {auth.value?.session ? (
-        <div class="flex flex-col justify-center gap-2">
-          <h3 class="text-xl font-semibold">You're already signed in</h3>
-          <p class="text-gray-600 dark:text-gray-400">
-            Signed in to <code>{auth.value!.user?.email}</code>
+    <div className="border border-gray-700 bg-gray-100 px-4 py-2 dark:border-gray-300 dark:bg-gray-800">
+      {auth?.session ? (
+        <div className="flex flex-col justify-center gap-2">
+          <h3 className="text-xl font-semibold">You're already signed in</h3>
+          <p className="text-gray-600 dark:text-gray-400">
+            Signed in to <code>{auth!.user?.email}</code>
           </p>
-          <Button variant="destructive" asChild disabled={isSigningOut.value}>
+          <Button variant="destructive" asChild disabled={isSigningOut}>
             <button
               onClick={() => {
-                isSigningOut.value = true
+                setSigningOut(true)
                 supabase.auth.signOut().finally(() => {
-                  isSigningOut.value = false
+                  setSigningOut(false)
                 })
               }}
-              disabled={isSigningOut.value}
+              disabled={isSigningOut}
             >
-              {isSigningOut.value && (
-                <Loader2 className="mr-1 animate-spin" size={16} />
-              )}
+              {isSigningOut && <Loader2 className="mr-1 animate-spin" size={16} />}
               Sign out
             </button>
           </Button>
@@ -60,7 +57,7 @@ export default function Auth() {
               }
             }
           }}
-          theme={theme.value}
+          theme={theme}
           providers={["github", "gitlab"]}
         />
       )}
