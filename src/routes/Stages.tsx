@@ -103,7 +103,7 @@ export default function Stages() {
         </span>
         <Button asChild variant="secondary" size="icon">
           <button
-            disabled={page >= Math.ceil((count || 0) / PER_PAGE)}
+            disabled={page >= Math.ceil((count || 0) / PER_PAGE) - 1}
             onClick={() =>
               setPage(p => (p < Math.ceil((count || 0) / PER_PAGE) - 1 ? p + 1 : p))
             }
