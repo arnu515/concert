@@ -9,6 +9,42 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      join_requests: {
+        Row: {
+          created_at: string
+          from_id: string
+          id: number
+          stage_id: string
+        }
+        Insert: {
+          created_at?: string
+          from_id: string
+          id?: number
+          stage_id: string
+        }
+        Update: {
+          created_at?: string
+          from_id?: string
+          id?: number
+          stage_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "join_requests_from_id_fkey"
+            columns: ["from_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "join_requests_stage_id_fkey"
+            columns: ["stage_id"]
+            isOneToOne: false
+            referencedRelation: "stages"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string
