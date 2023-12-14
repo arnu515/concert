@@ -5,6 +5,7 @@ import { useEffect } from "preact/hooks"
 import { Signal, useSignal } from "@preact/signals"
 import { Loader2 } from "lucide-react"
 import { Database } from "$/util/dbTypes"
+import * as cache from "$util/cache"
 
 interface AuthState {
   session: Session | null
@@ -18,6 +19,11 @@ export const AuthContext = createContext<
 
 export async function fetchProfile(userId?: string | null) {
   if (!userId) return null
+
+  // fetch from cache
+  const profileFromCache = await cache.get(`profile:${userId}`, undefined, 600000) // 10m
+  if (profileFromCache) return profileFromCache as AuthState["profile"]
+
   const { data, error } = await supabase
     .from("profiles")
     .select("*")
@@ -28,6 +34,9 @@ export async function fetchProfile(userId?: string | null) {
     console.error(error)
     return null
   }
+
+  // cache
+  await cache.put(`profile:${userId}`, data)
 
   return data
 }
