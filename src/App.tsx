@@ -1,15 +1,15 @@
 import ThemeProvider from "$contexts/ThemeContext"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom"
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client"
+import { queryClient, persister } from "$util/queryClient"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Index from "$r/page"
-import New from "./routes/new/page"
+import New from "$r/new/page"
 import RootLayout from "$r/layouts/Root"
 import RootError from "$r/error"
-import Signup from "./routes/signup/page"
-import newAction from "./routes/new/action"
-
-const queryClient = new QueryClient()
+import Signup from "$r/signup/page"
+import newAction from "$r/new/action"
+import StageStageIdPage from "$r/stage/[stageId]/page"
 
 const router = createBrowserRouter([
 	{
@@ -23,7 +23,9 @@ const router = createBrowserRouter([
 			},
 			{ path: "/new", element: <New />, action: newAction },
 			{ path: "/signup", element: <Signup /> },
-			{ path: "/login", element: <Signup view="sign_in" /> }
+			{ path: "/login", element: <Signup view="sign_in" /> },
+			{ path: "/stage", loader: () => redirect("/") },
+			{ path: "/stage/:stageId", element: <StageStageIdPage /> }
 		]
 	}
 ])
@@ -32,10 +34,10 @@ export function App() {
 	return (
 		<>
 			<ThemeProvider>
-				<QueryClientProvider client={queryClient}>
+				<PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
 					<RouterProvider router={router} />
 					<ReactQueryDevtools initialIsOpen={false} />
-				</QueryClientProvider>
+				</PersistQueryClientProvider>
 			</ThemeProvider>
 		</>
 	)
