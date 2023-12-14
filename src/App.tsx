@@ -1,7 +1,7 @@
 import AuthProvider from "$contexts/AuthContext"
 import ThemeProvider from "$contexts/ThemeContext"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import Index from "$r/index"
+import Index from "$r/page"
 import RootLayout from "$r/layouts/Root"
 import RootError from "$r/error"
 
