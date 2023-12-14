@@ -9,7 +9,7 @@ export default function FormGroup({
   children: ReactNode
 }) {
   return (
-    <div className={cn("flex flex-col justify-center gap-2", className)}>
+    <div className={cn("flex flex-col justify-center gap-1", className)}>
       {children}
     </div>
   )
