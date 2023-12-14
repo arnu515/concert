@@ -2,14 +2,14 @@ import { Database } from "$/util/dbTypes"
 import supabase from "$/util/supabase"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-export function useAcceptedInvitesCount() {
+export function useInvitesCount(acknowledged = true) {
   return useQuery({
-    queryKey: ["invites", "accepted", "count"],
+    queryKey: ["invites", acknowledged ? "accepted" : "pending", "count"],
     queryFn: async ({ signal }) => {
       const { count, error } = await supabase
         .from("stage_invites")
         .select("id", { count: "exact" })
-        .eq("acknowledged", true)
+        .eq("acknowledged", acknowledged)
         .abortSignal(signal)
       if (error) throw new Error(error.message)
       return count

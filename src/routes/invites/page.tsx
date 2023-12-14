@@ -5,14 +5,14 @@ import { Check, Loader2, X } from "lucide-react"
 import { Link } from "react-router-dom"
 import {
   useAcceptInvite,
-  useAcceptedInvitesCount,
+  useInvitesCount,
   useInvites,
   useRejectInvite
 } from "./invites"
 
 export default function InvitesPage() {
   const { data: invites, isPending, isError, error } = useInvites()
-  const { data: count } = useAcceptedInvitesCount()
+  const { data: count } = useInvitesCount(true)
   const { isPending: isAcceptPending, mutate: acceptInvite } = useAcceptInvite()
   const { isPending: isRejectPending, mutate: rejectInvite } = useRejectInvite()
 

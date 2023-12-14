@@ -8,17 +8,17 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuGroup,
   DropdownMenuItem
 } from "./ui/dropdown-menu"
-import { Button } from "./ui/button"
 import { ChevronDown } from "lucide-react"
+import { useInvitesCount } from "$/routes/invites/invites"
 
 export default function Navbar() {
   const auth = useContext(AuthContext)!
   const user = useMemo(() => auth?.user ?? null, [auth])
+  const { data: invitesCount } = useInvitesCount(false)
 
   return (
     <nav className="flex items-center justify-between border-b border-gray-400 bg-gray-200 px-4 py-2 text-black dark:border-gray-700 dark:bg-gray-800 dark:text-white">
@@ -36,7 +36,8 @@ export default function Navbar() {
         </Link>
         {user && (
           <Link to="/invites" className="font-semibold">
-            Invites <Badge className="text-sm">3</Badge>
+            Invites{" "}
+            {!!invitesCount && <Badge className="text-sm">{invitesCount}</Badge>}
           </Link>
         )}
         <Link
@@ -48,7 +49,7 @@ export default function Navbar() {
         {user && (
           <Link to="/settings">
             <Avatar
-              src={auth.profile?.avatar_url}
+              src={auth.profile!.avatar_url}
               alt={`${auth.profile?.username}'s avatar`}
               fb="ae"
               w="2rem"
@@ -67,7 +68,7 @@ export default function Navbar() {
             >
               {user ? (
                 <Avatar
-                  src={auth.profile?.avatar_url}
+                  src={auth.profile!.avatar_url}
                   alt={`${auth.profile?.username}'s avatar`}
                   fb="ae"
                   w="2rem"
@@ -84,7 +85,7 @@ export default function Navbar() {
                 <DropdownMenuItem asChild>
                   <Link to="/settings" className="flex items-center gap-4">
                     <Avatar
-                      src={auth.profile?.avatar_url}
+                      src={auth.profile!.avatar_url}
                       alt={`${auth.profile?.username}'s avatar`}
                       fb="ae"
                       w="2rem"
@@ -116,7 +117,10 @@ export default function Navbar() {
               {user && (
                 <DropdownMenuItem asChild>
                   <Link to="/invites" className="font-semibold">
-                    Invites <Badge className="ml-2 text-sm">3</Badge>
+                    Invites{" "}
+                    {!!invitesCount && (
+                      <Badge className="ml-2 text-sm">{invitesCount}</Badge>
+                    )}
                   </Link>
                 </DropdownMenuItem>
               )}
