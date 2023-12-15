@@ -1,6 +1,26 @@
 {
   "lockfile_version": "1",
   "packages": {
+    "deno@latest": {
+      "last_modified": "2023-12-08T10:05:40Z",
+      "resolved": "github:NixOS/nixpkgs/e9ef8a102c555da4f8f417fe5cf5bd539d8a38b7#deno",
+      "source": "devbox-search",
+      "version": "1.38.5",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/zg90dvgqw687v3n8mw2b4n73kf46wnxn-deno-1.38.5"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/qm4p590kgv2y01iz5li6la39cikaiwnw-deno-1.38.5"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/q156cq716m7g44bizwp9dnz57mmr6rxx-deno-1.38.5"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/5w41nmf4230fyzk9wjn9iw4jk3zrnwqh-deno-1.38.5"
+        }
+      }
+    },
     "nodePackages.pnpm@8.10.5": {
       "last_modified": "2023-11-23T16:10:41Z",
       "resolved": "github:NixOS/nixpkgs/e8b0430bc4c4235607ae102010dec2ba32e8c0ca#nodePackages.pnpm",
