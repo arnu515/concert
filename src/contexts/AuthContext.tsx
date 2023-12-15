@@ -1,4 +1,10 @@
-import { createContext, PropsWithChildren, useEffect, useState } from "react"
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState
+} from "react"
 import supabase from "$util/supabase"
 import type { Session, User } from "@supabase/supabase-js"
 import { Loader2 } from "lucide-react"
@@ -12,6 +18,8 @@ interface AuthState {
 }
 
 export const AuthContext = createContext<AuthState | null | undefined>(undefined)
+
+export const useAuth = () => useContext(AuthContext)!
 
 export async function fetchProfile(userId: string, rwd = false) {
   // fetch from cache
