@@ -8,6 +8,8 @@ import { useContext } from "react"
 import { useParams } from "react-router-dom"
 import RequestToJoin from "$/components/RequestToJoin"
 import Auth from "$/components/Auth"
+import MicTest from "./MicTest"
+import Checks from "./Checks"
 
 export default function StageStageIdPage() {
   const { stageId } = useParams() as { stageId: string }
@@ -62,7 +64,7 @@ export default function StageStageIdPage() {
     }
   })
 
-  if (isPending || (stage?.invite_only && isInviteCheckPending)) {
+  if (isPending || (stage?.invite_only && auth.user?.id !== stage.owner_id && isInviteCheckPending)) {
     return (
       <div className="m-4 mx-auto mt-20 max-w-sm">
         <Loader2 className="animate-spin duration-300" size={24} />
@@ -79,30 +81,36 @@ export default function StageStageIdPage() {
   }
 
   return (
-    <div className="m-4 mt-10">
-      <h1 className="mb-2 text-3xl font-bold">
-        Joining stage{" "}
-        <span className="text-gray-700 dark:text-gray-400">{stage.name}</span>
-      </h1>
-      <p className="mb-2 text-xl">
-        Description:{" "}
-        <code className="text-gray-700 dark:text-gray-400">{stage.description}</code>
-      </p>
-      <div className="flex items-center gap-2">
-        {auth?.user?.id === stage.owner_id && <Badge>You are the owner</Badge>}
-        {stage.invite_only && <Badge variant="destructive">Invite-Only</Badge>}
-      </div>
-      <div className="my-4">
-        {stage.invite_only && auth?.user?.id !== stage.owner_id && !isInvited ? (
-          <div className="max-w-screen-md">
-            <RequestToJoin stageId={stageId} />
-          </div>
-        ) : (
-          <Button size="lg" asChild>
-            <button disabled>Join Stage</button>
-          </Button>
-        )}
-      </div>
+    <div className="mx-4 my-4 grid max-w-screen-xl grid-cols-1 gap-6 md:mx-auto md:my-6 md:grid-cols-3 md:gap-4">
+      <main className="col-span-1 md:col-span-2">
+        <h1 className="mb-2 text-3xl font-bold">
+          Joining stage{" "}
+          <span className="text-gray-700 dark:text-gray-400">{stage.name}</span>
+        </h1>
+        <p className="mb-2 text-xl">
+          Description:{" "}
+          <code className="text-gray-700 dark:text-gray-400">{stage.description}</code>
+        </p>
+        <div className="flex items-center gap-2">
+          {auth?.user?.id === stage.owner_id && <Badge>You are the owner</Badge>}
+          {stage.invite_only && <Badge variant="destructive">Invite-Only</Badge>}
+        </div>
+        <div className="my-4">
+          {stage.invite_only && auth?.user?.id !== stage.owner_id && !isInvited ? (
+            <div className="max-w-screen-md">
+              <RequestToJoin stageId={stageId} />
+            </div>
+          ) : (
+            <Button size="lg" asChild>
+              <button disabled>Join Stage</button>
+            </Button>
+          )}
+        </div>
+      </main>
+      <aside className="max-w-sm">
+        <Checks />
+        <MicTest />
+      </aside>
     </div>
   )
 }
