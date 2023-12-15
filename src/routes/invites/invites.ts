@@ -12,7 +12,7 @@ export function useInvitesCount(acknowledged = true) {
   const { toast } = useToast()
 
   useEffect(() => {
-    if (!auth.user) return
+    if (!auth?.user) return
 
     const channel = supabase
       .channel(`realtime:invites_count`)
@@ -25,7 +25,7 @@ export function useInvitesCount(acknowledged = true) {
           filter: `to_id=eq.${auth.user.id}`
         },
         payload => {
-          client.refetchQueries({ queryKey: ["invites"] })
+          client.invalidateQueries({ queryKey: ["invites"] })
           if (payload.new?.acknowledged === false) {
             toast({
               title: "You have a new invite!",
@@ -43,7 +43,7 @@ export function useInvitesCount(acknowledged = true) {
           filter: `to_id=eq.${auth.user!.id}`
         },
         _ => {
-          client.refetchQueries({ queryKey: ["invites"] })
+          client.invalidateQueries({ queryKey: ["invites"] })
         }
       )
       .subscribe()

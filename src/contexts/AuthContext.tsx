@@ -19,7 +19,7 @@ interface AuthState {
 
 export const AuthContext = createContext<AuthState | null | undefined>(undefined)
 
-export const useAuth = () => useContext(AuthContext)!
+export const useAuth = () => useContext(AuthContext)
 
 export async function fetchProfile(userId: string, rwd = false) {
   // fetch from cache

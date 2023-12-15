@@ -4,33 +4,21 @@ import { AuthContext } from "$/contexts/AuthContext"
 import supabase from "$/util/supabase"
 import { useQuery } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { useParams } from "react-router-dom"
 import RequestToJoin from "$/components/RequestToJoin"
 import Auth from "$/components/Auth"
 import MicTest from "./MicTest"
 import Checks from "./Checks"
+import { useStore } from "@nanostores/react"
+import { tokenStore, useGetToken } from "$/contexts/tokenStore"
+import { Alert, AlertDescription, AlertTitle } from "$/components/ui/alert"
+import Stage from "$/components/stage/Stage"
+import { useIsInvitedToStage, useStage } from "$/contexts/stageStore"
 
 export default function StageStageIdPage() {
   const { stageId } = useParams() as { stageId: string }
-  const {
-    data: stage,
-    error,
-    isPending,
-    isError
-  } = useQuery({
-    queryKey: ["stage", stageId.toUpperCase()],
-    queryFn: async ({ signal }) => {
-      const { data, error } = await supabase
-        .from("stages")
-        .select("*")
-        .eq("id", stageId.toUpperCase())
-        .abortSignal(signal)
-        .maybeSingle()
-      if (error) throw new Error(error.message)
-      return data
-    }
-  })
+  const { data: stage, error, isPending, isError } = useStage(stageId)
 
   const auth = useContext(AuthContext)
 
@@ -48,23 +36,22 @@ export default function StageStageIdPage() {
     )
   }
 
-  const { data: isInvited, isPending: isInviteCheckPending } = useQuery({
-    queryKey: ["stage", stageId.toUpperCase(), "isInvited"],
-    enabled: stage?.invite_only && auth.user?.id !== stage.owner_id,
-    queryFn: async ({ signal }) => {
-      if (!auth.user) return false
-      const { data } = await supabase
-        .from("stage_invites")
-        .select("id")
-        .eq("stage_id", stage!.id)
-        .eq("to_id", auth.user.id)
-        .abortSignal(signal)
-        .maybeSingle()
-      return !!data?.id
-    }
-  })
+  const { data: isInvited, isPending: isInviteCheckPending } = useIsInvitedToStage(
+    stage!
+  )
 
-  if (isPending || (stage?.invite_only && auth.user?.id !== stage.owner_id && isInviteCheckPending)) {
+  const token = useStore(tokenStore)
+  const {
+    isPending: isGetTokenPending,
+    isError: isGetTokenError,
+    error: getTokenError,
+    mutate
+  } = useGetToken()
+
+  if (
+    isPending ||
+    (stage?.invite_only && auth.user?.id !== stage.owner_id && isInviteCheckPending)
+  ) {
     return (
       <div className="m-4 mx-auto mt-20 max-w-sm">
         <Loader2 className="animate-spin duration-300" size={24} />
@@ -78,6 +65,10 @@ export default function StageStageIdPage() {
 
   if (!stage) {
     throw new Error("404")
+  }
+
+  if (token) {
+    return <Stage token={token} stage={stage} />
   }
 
   return (
@@ -101,9 +92,25 @@ export default function StageStageIdPage() {
               <RequestToJoin stageId={stageId} />
             </div>
           ) : (
-            <Button size="lg" asChild>
-              <button disabled>Join Stage</button>
-            </Button>
+            <>
+              {isGetTokenError && (
+                <Alert className="my-2" variant="destructive">
+                  <AlertTitle>Could not join room</AlertTitle>
+                  <AlertDescription>{getTokenError.message}</AlertDescription>
+                </Alert>
+              )}
+              <Button size="lg" asChild>
+                <button
+                  disabled={isGetTokenPending}
+                  onClick={() => mutate({ stageId: stage.id })}
+                >
+                  {isGetTokenPending && (
+                    <Loader2 className="mr-1 animate-spin duration-300" size={24} />
+                  )}
+                  Join{isGetTokenPending && "ing"} Stage
+                </button>
+              </Button>
+            </>
           )}
         </div>
       </main>

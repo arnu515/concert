@@ -2,19 +2,23 @@ import FullPageError from "$/components/FullPageError"
 import { Button } from "$/components/ui/button"
 import { Skeleton } from "$/components/ui/skeleton"
 import { Check, Loader2, X } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import {
   useAcceptInvite,
   useInvitesCount,
   useInvites,
   useRejectInvite
 } from "./invites"
+import { useToast } from "$/components/ui/use-toast"
+import { ToastAction } from "@radix-ui/react-toast"
 
 export default function InvitesPage() {
   const { data: invites, isPending, isError, error } = useInvites()
   const { data: count } = useInvitesCount(true)
   const { isPending: isAcceptPending, mutate: acceptInvite } = useAcceptInvite()
   const { isPending: isRejectPending, mutate: rejectInvite } = useRejectInvite()
+  const { toast } = useToast()
+  const navigate = useNavigate()
 
   if (isError) {
     return (
@@ -44,7 +48,17 @@ export default function InvitesPage() {
                     title="Accept"
                     aria-label="Accept invite"
                     disabled={isAcceptPending}
-                    onClick={() => acceptInvite({ inviteId: invite.id })}
+                    onClick={() => {
+                      acceptInvite({ inviteId: invite.id })
+                      toast({
+                        title: "Would you like to join this stage?",
+                        description:
+                          "You have accepted the invite to join this stage. Click on the button to join it. You may join it at any time.",
+                        action: (
+                          <ToastAction altText="Join the stage">Join Stage</ToastAction>
+                        )
+                      })
+                    }}
                   >
                     {isAcceptPending ? (
                       <Loader2 size={16} className="animate-spin" />
