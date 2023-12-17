@@ -5,7 +5,7 @@ import { Database } from "dbTypes";
 import { generate } from "token";
 
 const API_KEY = Deno.env.get("LIVEKIT_API_KEY")!;
-const SECRET_KEY = Deno.env.get("LIVEKIT_API_SECRET")!;
+const SECRET_KEY = Deno.env.get("LIVEKIT_SECRET_KEY")!;
 const URL = Deno.env.get("SUPABASE_URL")!;
 const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
 
@@ -85,8 +85,6 @@ Deno.serve(async (req) => {
       });
     }
   }
-
-  console.log({ API_KEY, SECRET_KEY });
 
   // Create access token
   const token = await generate({
