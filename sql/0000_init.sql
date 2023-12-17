@@ -29,7 +29,6 @@ create table profiles (
   id uuid references auth.users on delete cascade not null primary key,
   username text unique not null,
   avatar_url text not null,
-  website text,
 
   constraint username_length check (char_length(username) >= 3),
   constraint avatar_url_check check (avatar_url like 'https://gravatar.com/avatar/%' OR avatar_url like 'https://' || get_project_ref() || '.supabase.co/storage/v1/public/avatars/%')
