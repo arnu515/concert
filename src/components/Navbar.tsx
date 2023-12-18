@@ -81,7 +81,7 @@ export default function Navbar() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
             <DropdownMenuGroup>
-              {user ? (
+              {user && (
                 <DropdownMenuItem asChild>
                   <Link to="/settings" className="flex items-center gap-4">
                     <Avatar
@@ -100,10 +100,6 @@ export default function Navbar() {
                       </span>
                     </div>
                   </Link>
-                </DropdownMenuItem>
-              ) : (
-                <DropdownMenuItem>
-                  <ThemeButton />
                 </DropdownMenuItem>
               )}
             </DropdownMenuGroup>
@@ -132,7 +128,7 @@ export default function Navbar() {
                   {user ? "Create Stage" : "Sign Up"}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <ThemeButton />
               </DropdownMenuItem>
             </DropdownMenuGroup>
