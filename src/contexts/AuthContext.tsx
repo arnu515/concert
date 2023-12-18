@@ -17,7 +17,9 @@ interface AuthState {
   profile: Database["public"]["Tables"]["profiles"]["Row"] | null
 }
 
-export const AuthContext = createContext<AuthState | null | undefined>(undefined)
+export const AuthContext = createContext<
+  (AuthState & { refreshProfile: () => Promise<void> }) | null | undefined
+>(undefined)
 
 export const useAuth = () => useContext(AuthContext)
 
@@ -47,6 +49,14 @@ export async function fetchProfile(userId: string, rwd = false) {
 export default function AuthProvider({ children }: PropsWithChildren) {
   const [authState, setAuthState] = useState<AuthState | null | undefined>(undefined)
 
+  async function refreshProfile() {
+    if (!authState?.user || !authState.session) return
+    setAuthState({
+      ...authState,
+      profile: await fetchProfile(authState.user.id, true)
+    })
+  }
+
   useEffect(() => {
     const {
       data: { subscription }
@@ -74,7 +84,9 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   }, [])
 
   return (
-    <AuthContext.Provider value={authState}>
+    <AuthContext.Provider
+      value={authState ? { ...authState, refreshProfile } : authState}
+    >
       {typeof authState === "undefined" ? (
         <div className="fixed left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-4">
           <Loader2 className="animate-spin duration-500" size={64} />

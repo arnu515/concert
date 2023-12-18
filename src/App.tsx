@@ -12,6 +12,7 @@ import newAction from "$r/new/action"
 import StageStageIdPage from "$r/stage/[stageId]/page"
 import StageStageIdError from "$r/stage/[stageId]/error"
 import InvitesPage from "$r/invites/page"
+import SettingsPage from "$r/settings/page"
 
 const router = createBrowserRouter([
 	{
@@ -32,7 +33,8 @@ const router = createBrowserRouter([
 				element: <StageStageIdPage />,
 				errorElement: <StageStageIdError />
 			},
-			{ path: "/invites", element: <InvitesPage /> }
+			{ path: "/invites", element: <InvitesPage /> },
+			{ path: "/settings", element: <SettingsPage /> }
 		]
 	}
 ])
