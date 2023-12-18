@@ -31,7 +31,7 @@ create table profiles (
   avatar_url text not null,
 
   constraint username_length check (char_length(username) >= 3),
-  constraint avatar_url_check check (avatar_url like 'https://gravatar.com/avatar/%' OR avatar_url like 'https://' || get_project_ref() || '.supabase.co/storage/v1/public/avatars/%')
+  constraint avatar_url_check check (avatar_url like 'https://gravatar.com/avatar/%' OR avatar_url like 'https://api.dicebear.com/7.x/initials/jpg%')
 );
 -- Set up Row Level Security (RLS)
 -- See https://supabase.com/docs/guides/auth/row-level-security for more details.
@@ -53,25 +53,13 @@ create function public.handle_new_user()
 returns trigger as $$
 begin
   insert into public.profiles (id, username, avatar_url)
-  values (new.id, coalesce(new.raw_user_meta_data->>'username', new.raw_user_meta_data->>'full_name', substring(new.email, 1, position('@' in new.email) - 1)), 'https://gravatar.com/avatar/' || md5(new.email) || '.jpg?d=' || coalesce(new.raw_user_meta_data->>'avatar_url', 'https%3A%2F%2Fapi.dicebear.com%2F7.x%2Finitials%2Fsvg%3Fseed%3D' || new.email || '%26backgroundType%3DgradientLinear'));
+  values (new.id, coalesce(new.raw_user_meta_data->>'username', new.raw_user_meta_data->>'full_name', substring(new.email, 1, position('@' in new.email) - 1)), 'https://gravatar.com/avatar/' || md5(new.email) || '.jpg?d=' || coalesce(new.raw_user_meta_data->>'avatar_url', 'https%3A%2F%2Fapi.dicebear.com%2F7.x%2Finitials%2Fjpg%3Fseed%3D' || new.email || '%26backgroundType%3DgradientLinear'));
   return new;
 end;
 $$ language plpgsql security definer;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
-
--- Set up Storage!
-insert into storage.buckets (id, name)
-  values ('avatars', 'Avatars');
-
--- Set up access controls for storage.
--- See https://supabase.com/docs/guides/storage#policy-examples for more details.
-create policy "Avatar images are publicly accessible." on storage.objects
-  for select using (bucket_id = 'avatars');
-
-create policy "Anyone can upload an avatar." on storage.objects
-  for insert with check (bucket_id = 'avatars');
 
 -- Enable realtime
 alter publication supabase_realtime add table profiles;
