@@ -6,7 +6,6 @@ import { Loader2 } from "lucide-react"
 import type { PropsWithChildren } from "react"
 import { tokenStore } from "$/contexts/tokenStore"
 import StageView from "./StageView"
-import { useStageForRooms } from "$/contexts/stageStore"
 
 interface Props {
   token: string

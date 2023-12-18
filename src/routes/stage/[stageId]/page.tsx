@@ -39,7 +39,7 @@ function StageStageIdContent({
 		mutate
 	} = useGetToken()
 
-	if (stage?.invite_only && auth.user?.id !== stage.owner_id && isInviteCheckPending) {
+	if (stage?.invite_only && auth?.user?.id !== stage.owner_id && isInviteCheckPending) {
 		return <Loading />
 	}
 

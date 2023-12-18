@@ -54,7 +54,7 @@ export function useAcceptJoinRequest() {
     { joinRequestId: Database["public"]["Tables"]["join_requests"]["Row"]["id"] }
   >({
     mutationFn: async ({ joinRequestId }) => {
-      if (!auth.user) throw new Error("Unauthorized")
+      if (!auth?.user) throw new Error("Unauthorized")
       const { error: joinRequestDeleteError, data: joinRequest } = await supabase
         .from("join_requests")
         .delete()
